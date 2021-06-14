@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Stoke detection application">
+    <meta name="author" content="IHBACH Mohamed Yassine && TAHERI Oumaima">
+    <meta name="keywords" content="Machine learning Stroke detection">
+    <style>
+        label{
+            font-weight: bold;
+            color: black;
+             }
+        .results{
+
+        }
+    </style>
+
+    <!-- Title Page-->
+    <title>Stroke Detection</title>
+
+    <!-- Icons font CSS-->
+    <link href="{{ url_for('static' , filename='vendor/mdi-font/css/material-design-iconic-font.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url_for('static' , filename='vendor/font-awesome-4.7/css/font-awesome.min.css') }}" rel="stylesheet" media="all">
+    <!-- Font special for pages-->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Vendor CSS-->
+    <link href="{{ url_for('static' , filename='vendor/select2/select2.min.css')}} " rel="stylesheet" media="all">
+    <link href="{{ url_for('static' , filename='vendor/datepicker/daterangepicker.css')}}" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link href="{{ url_for('static' , filename='/css/main.css') }} " rel="stylesheet" media="all">
+</head>
+
+<body>
+    <div class="page-wrapper bg-gra-01 p-t-180 p-b-100 font-poppins">
+        <div class="wrapper wrapper--w780">
+            <div class="card card-3">
+                {% if not request.form %}
+                <div class="card-heading" style="text-align:center;font-weight:bold;font-size:1.2em;"><p>Stroke is a <span style="color:red" >medical emergency</span>, and prompt treatment is crucial. Early action can reduce brain damage and <span style="color:green" >save your life . . .</span></p></div>
+                <div class="card-body" style="background-color: brown;">
+                    <h1 class="title" style="text-align:center;">Let's Check your Brain Health</h1>
+                    <form method="POST" action = "{{ url_for('diagnose')}}" >
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <div class="rs-select2 js-select-simple select--no-search">
+                                        <label>AGE :</label>
+                                        <select name="Age" required>
+                                            <option disabled selected value=""></option>
+                                            <option value="0" >0-17</option>
+                                            <option value="1" >18-33</option>
+                                            <option value="2" >34-49</option>
+                                            <option value="3" >50-66</option>
+                                            <option value="4" >+67</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <div class="rs-select2 js-select-simple select--no-search">
+                                        <label>GLUCOSE LEVEL :</label>
+                                        <select name="Avg_glucose_level" required>
+                                            <option disabled selected value=""></option>
+                                            <option value="0" >55-86</option>
+                                            <option value="1" >87-117</option>
+                                            <option value="2" >118-164</option>
+                                            <option value="3" >165-211</option>
+                                            <option value="4" >212-272</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                        <label>WEIGHT (KG) :</label>
+                                        <input class="input--style-3" type="number" min="10" max="200"  name="weight" required>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                        <label>HEIGHT (CM):</label>
+                                        <input class="input--style-3" type="number" min="100" max="220" name="height" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <div class="rs-select2 js-select-simple select--no-search">
+                                        <label>GENDER :</label>
+                                        <select name="gender" required>
+                                            <option disabled selected value=""></option>
+                                            <option value="1" >Male</option>
+                                            <option value="0" >Female</option>
+                                            <option value="2" >Other</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <div class="rs-select2 js-select-simple select--no-search">
+                                        <label>MARRIED ?</label>
+                                        <select name="Ever_married" required>
+                                            <option disabled selected value=""></option>
+                                            <option value="1">Yes</option>
+                                            <option value="0">No</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <div class="rs-select2 js-select-simple select--no-search">
+                                        <label>WORK TYPE :</label>
+                                        <select name="work_type" required>
+                                            <option disabled selected value=""></option>
+                                            <option value="0">Governement job</option>
+                                            <option value="1">Never worked</option>
+                                            <option value="2">Private</option>
+                                            <option value="3">Self-employed</option>
+                                            <option value="4">Children</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <div class="rs-select2 js-select-simple select--no-search">
+                                        <label>RESIDENCE :</label>
+                                        <select name="Residence_type" required>
+                                            <option disabled selected value=""></option>
+                                            <option value="1">Urban</option>
+                                            <option value="0">Rural</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="rs-select2 js-select-simple select--no-search">
+                                <label>DO YOU SMOKE ?</label>
+                                <select name="smoking_status" required>
+                                    <option disabled selected value=""></option>
+                                    <option value="1">Never smoked</option>
+                                    <option value="2">Smokes</option>
+                                    <option value="0">Formerly smoked</option>
+                                </select>
+                                <div class="select-dropdown"></div>
+                            </div>
+                        </div>
+
+
+
+                        <div style="padding-left: 100px;padding-right: 100px;">
+                            <button class="btn btn--pill btn--green" type="submit">Submit</button>
+                        </div>
+                    </form>
+
+                </div>
+                {% else %}
+                    <div style="height:75vh;color:black;text-align:center;background-color:white">
+                        {% if result == 0 %}
+                            <h1 class="results" style="color:black;text-align:center;background-color:white">
+                                <p style="font-size: 200px;">&#128523;</p>
+                                THANKS GOD You're fine
+                            </h1>
+                        {% else %}
+                            <h1 class="results" style="color:black;text-align:center;">
+                                <p style="font-size: 200px;">&#128561;</p>
+                                OMG !!! You should visit a doctor ASAP
+                            </h1>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jquery JS-->
+    <script src="{{ url_for('static' , filename='vendor/jquery/jquery.min.js') }}"></script>
+    <!-- Vendor JS-->
+    <script src="{{ url_for('static' , filename='vendor/select2/select2.min.js') }}"></script>
+    <script src="{{ url_for('static' , filename='vendor/datepicker/moment.min.js') }}"></script>
+    <script src="{{ url_for('static' , filename='vendor/datepicker/daterangepicker.js') }}"></script>
+
+    <!-- Main JS-->
+    <script src="{{ url_for('static' , filename='js/global.js') }}"></script>
+</body>
+
+</html>
+<!-- end document-->
